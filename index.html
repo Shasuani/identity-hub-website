@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdentifyHub - Cinematic Privacy Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-animation">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span>IdentifyHub</span>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="loading-text">Initializing Security Protocols...</div>
+                <div class="loading-details">
+                    <span class="detail">Encrypting Connection...</span>
+                    <span class="detail">Loading AI Modules...</span>
+                    <span class="detail">Establishing Secure Channel...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Background Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Audio Elements -->
+    <audio id="background-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="click-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hover-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-hover-sci-fi-mouse-593.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="success-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-success-bell-593.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="error-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-warning-alarm-buzzer-2851.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Navigation -->
+    <nav class="cinematic-nav">
+        <div class="nav-container">
+            <div class="nav-logo" id="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>IdentifyHub</span>
+            </div>
+            
+            <div class="nav-center">
+                <div class="nav-links">
+                    <a href="#hero" class="nav-link" data-section="hero">Home</a>
+                    <a href="#features" class="nav-link" data-section="features">Features</a>
+                    <a href="#services" class="nav-link" data-section="services">Services</a>
+                    <a href="#pricing" class="nav-link" data-section="pricing">Pricing</a>
+                    <a href="#testimonials" class="nav-link" data-section="testimonials">Testimonials</a>
+                    <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button id="music-toggle" class="control-btn" title="Toggle Music">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="theme-toggle" class="control-btn" title="Change Theme">
+                    <i class="fas fa-palette"></i>
+                </button>
+                <button id="fullscreen-toggle" class="control-btn" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="btn btn-primary btn-glow" id="login-btn">
+                    <i class="fas fa-terminal"></i>
+                    Access System
+                </button>
+            </div>
+
+            <div class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-content">
+            <a href="#hero" class="mobile-nav-link">Home</a>
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#services" class="mobile-nav-link">Services</a>
+            <a href="#pricing" class="mobile-nav-link">Pricing</a>
+            <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+            <div class="mobile-controls">
+                <button id="mobile-music-toggle" class="control-btn">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="mobile-theme-toggle" class="control-btn">
+                    <i class="fas fa-palette"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    LIVE PROTECTION ACTIVE
+                </div>
+
+                <h1 class="hero-title">
+                    <span class="title-line">
+                        <span class="text-reveal">ENTER THE FUTURE OF</span>
+                    </span>
+                    <span class="title-line">
+                        <span class="gradient-text text-reveal" data-delay="0.2">DIGITAL PRIVACY</span>
+                    </span>
+                </h1>
+
+                <p class="hero-description">
+                    Where your identity becomes your strongest asset. Military-grade encryption meets AI-powered protection in a seamless, cinematic experience.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-large btn-glow" id="start-trial">
+                        <i class="fas fa-rocket"></i>
+                        INITIATE SECURITY PROTOCOL
+                        <span class="btn-sparkle"></span>
+                    </button>
+                    
+                    <button class="btn btn-secondary btn-large" id="watch-demo">
+                        <i class="fas fa-play"></i>
+                        VIEW CINEMATIC DEMO
+                    </button>
+
+                    <button class="btn btn-outline btn-large" id="learn-more">
+                        <i class="fas fa-book"></i>
+                        LEARN MORE
+                    </button>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="99.9">0</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="256">0</div>
+                        <div class="stat-label">Encryption</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="10000">0</div>
+                        <div class="stat-label">Protected</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="24">0</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hologram-container">
+                    <div class="hologram-card">
+                        <div class="hologram-header">
+                            <div class="status-indicator"></div>
+                            <span>SECURE IDENTITY MATRIX</span>
+                            <div class="signal-strength">
+                                <div class="signal-bar"></div>
+                                <div class="signal-bar"></div>
+                                <div class="signal-bar"></div>
+                                <div class="signal-bar"></div>
+                                <div class="signal-bar"></div>
+                            </div>
+                        </div>
+                        <div class="hologram-content">
+                            <div class="data-stream">
+                                <div class="stream-line"></div>
+                                <div class="stream-line"></div>
+                                <div class="stream-line"></div>
+                            </div>
+                            <div class="identity-display">
+                                <div class="identity-field">
+                                    <label>IDENTITY STATUS</label>
+                                    <span class="status-active">ACTIVE & SECURE</span>
+                                </div>
+                                <div class="identity-field">
+                                    <label>ENCRYPTION LEVEL</label>
+                                    <span>QUANTUM-256</span>
+                                </div>
+                                <div class="identity-field">
+                                    <label>THREAT DETECTION</label>
+                                    <span class="status-clean">CLEAN</span>
+                                </div>
+                                <div class="identity-field">
+                                    <label>LAST SCAN</label>
+                                    <span id="last-scan-time">Just now</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-small" id="refresh-scan">
+                                <i class="fas fa-sync"></i>
+                                Rescan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+            <span>SCROLL TO EXPLORE</span>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <div class="container">
+            <span>Trusted by leading companies worldwide:</span>
+            <div class="trust-logos">
+                <div class="logo-item">TechCorp</div>
+                <div class="logo-item">SecureBank</div>
+                <div class="logo-item">DataShield</div>
+                <div class="logo-item">PrivacyPlus</div>
+                <div class="logo-item">CyberGuard</div>
+                <div class="logo-item">QuantumSec</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="section-background">
+            <div class="grid-overlay"></div>
+        </div>
+
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">ADVANCED</span>
+                    SECURITY MATRIX
+                </h2>
+                <p class="section-subtitle">Next-generation protection powered by artificial intelligence and quantum encryption</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-feature="biometric">
+                    <div class="feature-icon">
+                        <i class="fas fa-fingerprint"></i>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3>Quantum Biometrics</h3>
+                    <p>Multi-dimensional biometric authentication that adapts to your unique biological signature in real-time.</p>
+                    <div class="feature-actions">
+                        <button class="feature-btn" data-action="demo">
+                            <i class="fas fa-play"></i>
+                            Live Demo
+                        </button>
+                        <button class="feature-btn" data-action="learn">
+                            <i class="fas fa-book"></i>
+                            Learn More
+                        </button>
+                    </div>
+                    <div class="feature-status">
+                        <span class="status-online">Online</span>
+                        <div class="usage-meter">
+                            <div class="usage-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-feature="ai">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3>Neural AI Defense</h3>
+                    <p>Self-learning AI that predicts and neutralizes threats before they materialize in your digital space.</p>
+                    <div class="feature-actions">
+                        <button class="feature-btn" data-action="demo">
+                            <i class="fas fa-play"></i>
+                            Live Demo
+                        </button>
+                        <button class="feature-btn" data-action="learn">
+                            <i class="fas fa-book"></i>
+                            Learn More
+                        </button>
+                    </div>
+                    <div class="feature-status">
+                        <span class="status-online">Online</span>
+                        <div class="usage-meter">
+                            <div class="usage-fill" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-feature="vpn">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3>Quantum VPN</h3>
+                    <p>Instantaneous global connectivity through our quantum-entangled server network. Zero latency, maximum security.</p>
+                    <div class="feature-actions">
+                        <button class="feature-btn" data-action="demo">
+                            <i class="fas fa-play"></i>
+                            Live Demo
+                        </button>
+                        <button class="feature-btn" data-action="learn">
+                            <i class="fas fa-book"></i>
+                            Learn More
+                        </button>
+                    </div>
+                    <div class="feature-status">
+                        <span class="status-online">Online</span>
+                        <div class="usage-meter">
+                            <div class="usage-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-cta">
+                <button class="btn btn-primary btn-large" id="explore-all-features">
+                    <i class="fas fa-compass"></i>
+                    Explore All Features
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">COMPREHENSIVE</span>
+                    PROTECTION SUITE
+                </h2>
+                <p class="section-subtitle">End-to-end security solutions for individuals and enterprises</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">
+                            <i class="fas fa-eraser"></i>
+                        </div>
+                        <h3>Data Erasure</h3>
+                        <span class="service-price">From $29/mo</span>
+                    </div>
+                    <p>Permanently remove your personal information from data brokers, people search sites, and public records.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Automated</span>
+                        <span class="feature-tag">Continuous</span>
+                        <span class="feature-tag">Comprehensive</span>
+                    </div>
+                    <div class="service-stats">
+                        <div class="service-stat">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Sites Monitored</span>
+                        </div>
+                        <div class="service-stat">
+                            <span class="stat-number">99.7%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                    <div class="service-actions">
+                        <button class="btn btn-primary btn-small" data-service="data-erasure">
+                            <i class="fas fa-shopping-cart"></i>
+                            Get Started
+                        </button>
+                        <button class="btn btn-outline btn-small" data-service="data-erasure-info">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="service-card highlighted">
+                    <div class="service-badge">Most Popular</div>
+                    <div class="service-header">
+                        <div class="service-icon">
+                            <i class="fas fa-mask"></i>
+                        </div>
+                        <h3>Identity Cloaking</h3>
+                        <span class="service-price">From $49/mo</span>
+                    </div>
+                    <p>Generate unlimited virtual identities with realistic profiles for secure online interactions and transactions.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Unlimited</span>
+                        <span class="feature-tag">Realistic</span>
+                        <span class="feature-tag">Secure</span>
+                    </div>
+                    <div class="service-stats">
+                        <div class="service-stat">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Identities</span>
+                        </div>
+                        <div class="service-stat">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Undetectable</span>
+                        </div>
+                    </div>
+                    <div class="service-actions">
+                        <button class="btn btn-primary btn-small" data-service="identity-cloaking">
+                            <i class="fas fa-shopping-cart"></i>
+                            Get Started
+                        </button>
+                        <button class="btn btn-outline btn-small" data-service="identity-cloaking-info">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Privacy Analytics</h3>
+                        <span class="service-price">From $39/mo</span>
+                    </div>
+                    <p>Detailed insights into your digital footprint and real-time monitoring of your online presence and exposure.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Real-time</span>
+                        <span class="feature-tag">Detailed</span>
+                        <span class="feature-tag">Actionable</span>
+                    </div>
+                    <div class="service-stats">
+                        <div class="service-stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Monitoring</span>
+                        </div>
+                        <div class="service-stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Metrics</span>
+                        </div>
+                    </div>
+                    <div class="service-actions">
+                        <button class="btn btn-primary btn-small" data-service="privacy-analytics">
+                            <i class="fas fa-shopping-cart"></i>
+                            Get Started
+                        </button>
+                        <button class="btn btn-outline btn-small" data-service="privacy-analytics-info">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">FLEXIBLE</span>
+                    PRICING PLANS
+                </h2>
+                <p class="section-subtitle">Choose the perfect plan for your privacy needs</p>
+            </div>
+
+            <div class="pricing-toggle">
+                <span>Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricing-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Yearly <small>Save 20%</small></span>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Basic</h3>
+                        <div class="price" data-monthly="$29" data-yearly="$279">$29<span>/mo</span></div>
+                        <p>Essential privacy protection for individuals</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Basic Data Erasure</li>
+                        <li><i class="fas fa-check"></i> 5 Virtual Identities</li>
+                        <li><i class="fas fa-check"></i> Standard VPN</li>
+                        <li><i class="fas fa-check"></i> Email Support</li>
+                        <li><i class="fas fa-times"></i> Advanced Analytics</li>
+                        <li><i class="fas fa-times"></i> Priority Removal</li>
+                    </ul>
+                    <button class="btn btn-outline btn-large pricing-select" data-plan="basic">
+                        Select Plan
+                    </button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="price" data-monthly="$79" data-yearly="$759">$79<span>/mo</span></div>
+                        <p>Complete protection for professionals</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Advanced Data Erasure</li>
+                        <li><i class="fas fa-check"></i> 25 Virtual Identities</li>
+                        <li><i class="fas fa-check"></i> Quantum VPN</li>
+                        <li><i class="fas fa-check"></i> Priority Support</li>
+                        <li><i class="fas fa-check"></i> Basic Analytics</li>
+                        <li><i class="fas fa-times"></i> Enterprise Features</li>
+                    </ul>
+                    <button class="btn btn-primary btn-large pricing-select" data-plan="professional">
+                        Select Plan
+                    </button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price" data-monthly="$199" data-yearly="$1910">$199<span>/mo</span></div>
+                        <p>Maximum security for organizations</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Premium Data Erasure</li>
+                        <li><i class="fas fa-check"></i> Unlimited Identities</li>
+                        <li><i class="fas fa-check"></i> Global Quantum VPN</li>
+                        <li><i class="fas fa-check"></i> 24/7 Premium Support</li>
+                        <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                        <li><i class="fas fa-check"></i> Custom Solutions</li>
+                    </ul>
+                    <button class="btn btn-outline btn-large pricing-select" data-plan="enterprise">
+                        Select Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">TRUSTED</span>
+                    BY THOUSANDS
+                </h2>
+                <p class="section-subtitle">See what our users say about their experience</p>
+            </div>
+
+            <div class="testimonials-carousel">
+                <div class="testimonial-card active">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "IdentifyHub transformed how we handle digital security. The AI threat detection has prevented multiple sophisticated attacks that other systems missed."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <p>CTO, TechCorp</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "The virtual identity system is revolutionary. We can now conduct secure online operations without exposing our real personnel to digital risks."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>Marcus Johnson</h4>
+                                <p>Security Director, SecureBank</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "As a privacy advocate, I've tried every service out there. IdentifyHub is the first that truly delivers on its promises with transparent, effective protection."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>Dr. Emily Rodriguez</h4>
+                                <p>Privacy Researcher</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-controls">
+                <button class="carousel-btn prev" id="testimonial-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-dots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                </div>
+                <button class="carousel-btn next" id="testimonial-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Ready to Secure Your Digital Life?</h2>
+                    <p>Get in touch with our security experts for a personalized consultation and demo.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email Us</h4>
+                                <p>security@identifyhub.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Call Us</h4>
+                                <p>+1 (555) 123-SECURE</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-comment"></i>
+                            <div>
+                                <h4>Live Chat</h4>
+                                <p>Available 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company (Optional)</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-shield-alt"></i>
+                        IdentifyHub
+                    </div>
+                    <p>Advanced privacy protection for the modern digital world. Secure your identity, protect your future.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">System Status</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 IdentifyHub. All rights reserved. Protecting digital identities worldwide.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Modal -->
+    <div id="demo-modal" class="modal">
+        <div class="modal-content demo-modal">
+            <div class="modal-header">
+                <h3>SECURITY MATRIX DEMO</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-container">
+                    <div class="demo-visual">
+                        <div class="security-sphere" id="security-sphere">
+                            <div class="sphere-core"></div>
+                            <div class="shield-layer"></div>
+                            <div class="particle-field"></div>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="demo-stat">
+                                <span class="stat-label">Threat Level</span>
+                                <span class="stat-value" id="threat-level">LOW</span>
+                            </div>
+                            <div class="demo-stat">
+                                <span class="stat-label">Protection</span>
+                                <span class="stat-value" id="protection-level">100%</span>
+                            </div>
+                            <div class="demo-stat">
+                                <span class="stat-label">Active Shields</span>
+                                <span class="stat-value" id="active-shields">8/8</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-controls">
+                        <h4>Simulate Attack Scenarios</h4>
+                        <div class="scenario-buttons">
+                            <button class="demo-control-btn" data-scenario="phishing">
+                                <i class="fas fa-fish"></i>
+                                Phishing Attack
+                            </button>
+                            <button class="demo-control-btn" data-scenario="malware">
+                                <i class="fas fa-bug"></i>
+                                Malware Defense
+                            </button>
+                            <button class="demo-control-btn" data-scenario="tracking">
+                                <i class="fas fa-binoculars"></i>
+                                Tracking Block
+                            </button>
+                            <button class="demo-control-btn" data-scenario="ddos">
+                                <i class="fas fa-network-wired"></i>
+                                DDoS Protection
+                            </button>
+                        </div>
+                        <div class="demo-log" id="demo-log">
+                            <div class="log-entry">System initialized. All shields active.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="auth-header">
+                <h3>SECURE ACCESS PORTAL</h3>
+                <div class="auth-status">
+                    <div class="status-indicator secure"></div>
+                    SYSTEM SECURE
+                </div>
+            </div>
+            <div class="auth-body">
+                <form class="auth-form" id="auth-form">
+                    <div class="form-group">
+                        <label for="access-id">ACCESS ID</label>
+                        <input type="text" id="access-id" name="access-id" placeholder="Enter your identity code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantum-key">QUANTUM KEY</label>
+                        <input type="password" id="quantum-key" name="quantum-key" placeholder="••••••••••••" required>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                        </div>
+                    </div>
+                    <div class="auth-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Remember this device
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Quantum Key?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large btn-glow">
+                        <i class="fas fa-lock-open"></i>
+                        AUTHENTICATE
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" id="signup-link">Request Access</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="auth-header">
+                <h3>REQUEST ACCESS</h3>
+                <div class="auth-status">
+                    <div class="status-indicator pending"></div>
+                    ACCESS PENDING
+                </div>
+            </div>
+            <div class="auth-body">
+                <form class="auth-form" id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-company">Company</label>
+                        <input type="text" id="signup-company" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-reason">Reason for Access</label>
+                        <select id="signup-reason" name="reason" required>
+                            <option value="">Select a reason</option>
+                            <option value="personal">Personal Privacy</option>
+                            <option value="business">Business Security</option>
+                            <option value="enterprise">Enterprise Solution</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-paper-plane"></i>
+                        REQUEST ACCESS
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" id="login-from-signup">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Info Modal -->
+    <div id="service-info-modal" class="modal">
+        <div class="modal-content service-modal">
+            <div class="modal-header">
+                <h3 id="service-info-title">Service Details</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="service-info-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions-bar">
+        <button class="quick-action" id="quick-scan" title="Quick Security Scan">
+            <i class="fas fa-shield-alt"></i>
+        </button>
+        <button class="quick-action" id="quick-vpn" title="Enable VPN">
+            <i class="fas fa-globe"></i>
+        </button>
+        <button class="quick-action" id="quick-support" title="Live Support">
+            <i class="fas fa-headset"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="three-app.js"></script>
+</body>
+</html>
